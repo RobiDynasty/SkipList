@@ -18,7 +18,7 @@ public class SkipList {
 	
 	public static void insert(ArrayList<Node> list, int searchKey, int newValue) {
 		Node[] updates = new Node[maxLevel];
-		Node pos = list.get(0);	// Position starts from the head of the list
+		Node pos = list.get(0);	// Position starts from the head of the list.
 		
 		for(int i = pos.levels; i >= 1; i--) {
 			while(pos.next[i].key < searchKey || pos.next == null) {
