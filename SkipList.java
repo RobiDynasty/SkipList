@@ -1,41 +1,45 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class SkipList {
 	
-	public static LinkedList<Node> list;
+	public static ArrayList<Node> list;
+	final static int maxLevel = 6;
+	
 
 	public static void initializeList() {
-		LinkedList<Node> list = new LinkedList<Node>();
+		list = new ArrayList<Node>();
 		Node n = new Node(1);
 		list.add(n);
-		System.out.println(list.get(0).level);
+		list.get(0).next = null;
+		System.out.println(list.get(0).levels);
 	}
 	
-	public static void insert(LinkedList<Node> list, int searchKey, int newValue) {
-		Node[] updates = new Node[6];
-		Node x = list.get(0);
+	
+	public static void insert(ArrayList<Node> list, int searchKey, int newValue) {
+		Node[] updates = new Node[maxLevel];
+		Node pos = list.get(0);	// Position starts from the head of the list
 		
-		for(int i = x.level; i >= 1; i--) {
-			while(x.next[i].key < searchKey || x.next == null) {
-				x = x.next[i];
+		for(int i = pos.levels; i >= 1; i--) {
+			while(pos.next[i].key < searchKey || pos.next == null) {
+				pos = pos.next[i];
 			}
-			updates[i] = x;
+			updates[i] = pos;
 		}
 		
-		if(x.key == searchKey) {
-			x.data = newValue;
+		if(pos.key == searchKey) {
+			pos.data = newValue;
 		}
 		
 		else {
 			int newLevel = randomLevel();
-			int listLevel = list.get(0).level;
+			int listLevel = list.get(0).levels;
 			
 			if(newLevel > listLevel) {
 				for(int i = listLevel; i < newLevel; i++) {
 					updates[i] = list.get(0);
 				}
-				list.get(0).level = newLevel;
+				list.get(0).levels = newLevel;
 			}
 			Node n = new Node(newLevel, searchKey, newValue);
 			
@@ -60,15 +64,13 @@ public class SkipList {
 			randNum = rand.nextInt(2);
 		}
 		
-		
-		
 		return Math.min(newLevel, 5);
 	}
 	
 	public static void main(String[] args) {
 		initializeList();
-		System.out.println(list.size());
-		//System.out.println(list.get(0).level);
+		System.out.println(list.get(0).next);
+		
 	}
 	
 }

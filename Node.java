@@ -2,23 +2,27 @@
 
 public class Node {
 
-	public int level;
+	public int levels;
 	public int key;
 	public int data;
 	public Node[] next;
 	
-	Node(int level, int key, int data) {
-		this.level = level;
+	Node(int levels, int key, int data) {
+		this.levels = levels;
 		this.key = key;
 		this.data = data;
-		Node[] next = new Node[level];
+		next = new Node[levels];
 	}
 	
-	Node(int level){
-		this.level = level;
-		next = null;
+	
+	
+	Node(int levels){
+		this.levels = levels;
 	}
 	
+	Node(){
+		this.next = null;
+	}
 	
 	
 	
