@@ -4,27 +4,41 @@ import java.util.Random;
 public class SkipList {
 	
 	public static ArrayList<Node> list;
-	final static int maxLevel = 6;
+	private final static int maxLevels = 6;
+	public static int currentLevels;
 	
 
 	public static void initializeList() {
 		list = new ArrayList<Node>();
-		Node n = new Node(1);
+		Node n = new Node();
 		list.add(n);
-		list.get(0).next = null;
-		System.out.println(list.get(0).levels);
+		currentLevels = list.size();
+		//System.out.println(list.get(0));
+		//System.out.println(list.get(0).levels);
+	}
+	
+	public static Node getHead(ArrayList<Node> list) {
+		return list.get(0);
 	}
 	
 	
+	
 	public static void insert(ArrayList<Node> list, int searchKey, int newValue) {
-		Node[] updates = new Node[maxLevel];
-		Node pos = list.get(0);	// Position starts from the head of the list.
+		Node[] updates = new Node[maxLevels];
+		Node pos = getHead(list);	// Position starts from the head of the list
 		
-		for(int i = pos.levels; i >= 1; i--) {
-			while(pos.next[i].key < searchKey || pos.next == null) {
-				pos = pos.next[i];
+		System.out.println("pos =" + (pos.headerNext == null));
+		
+		for(int i = list.size(); i > 0; i--) {
+			if(pos.headerNext == null) {
+				updates[i-1] = pos;
 			}
-			updates[i] = pos;
+			else {
+				while(pos.headerNext == null) {
+					pos = pos.next[i-1];
+				}
+				updates[i-1] = pos;
+			}
 		}
 		
 		if(pos.key == searchKey) {
@@ -32,20 +46,24 @@ public class SkipList {
 		}
 		
 		else {
-			int newLevel = randomLevel();
-			int listLevel = list.get(0).levels;
+			int newLevel = 1; 	// produces a random level randomLevel();
+			int listLevel = list.size();	// Number of levels currently on head of the list
+			System.out.println("new level " + newLevel);
+			System.out.println("updates[0] " + updates[0].next);
 			
 			if(newLevel > listLevel) {
-				for(int i = listLevel; i < newLevel; i++) {
-					updates[i] = list.get(0);
+				for(int i = listLevel; i <= newLevel; i++) {
+					Node n = new Node(listLevel);
+					list.add(n);
+					updates[i - 1] = list.get(listLevel).headerNext;
 				}
-				list.get(0).levels = newLevel;
+				newLevel = list.size();
 			}
-			Node n = new Node(newLevel, searchKey, newValue);
+			Node newNode = new Node(newLevel, searchKey, newValue);
 			
-			for (int i = 1; i <= newLevel; i++) {
-				n.next[i].next = updates[i].next;
-				updates[i] = n;
+			for (int i = 0; i < newLevel; i++) {
+				newNode.next[i] = updates[i].headerNext;
+				updates[i].headerNext = newNode;
 			}
 		}
 		
@@ -57,19 +75,23 @@ public class SkipList {
 		int newLevel = 1;
 		Random rand = new Random();
 		int randNum = rand.nextInt(2);
-		System.out.println(randNum + " first randNum");
+		// System.out.println(randNum + " first randNum");
 		
 		while(randNum == 0) {
 			newLevel = newLevel + 1;
 			randNum = rand.nextInt(2);
 		}
 		
-		return Math.min(newLevel, 5);
+		return Math.min(newLevel, maxLevels);
 	}
 	
 	public static void main(String[] args) {
 		initializeList();
-		System.out.println(list.get(0).next);
+		System.out.println(list.get(0).headerNext);
+		insert(list, 3, 4);
+		System.out.println(list.get(0).headerNext.key);
+		//System.out.println(list.get(0).next)
+		//System.out.println(randomLevel());
 		
 	}
 	

@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class randTest {
 	
-	public static int randomLevel() {
+	public static int randomLevel(int maxLevels) {
 		int newLevel = 1;
 		Random rand = new Random();
 		int randNum = rand.nextInt(2);
@@ -15,7 +15,7 @@ public class randTest {
 		
 		
 		
-		return Math.min(newLevel, 6);
+		return Math.min(newLevel, maxLevels);
 	}
 	
 	
