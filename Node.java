@@ -6,8 +6,6 @@ public class Node {
 	public int key;
 	public int data;
 	public Node[] next;
-	
-	
 	public boolean isNull;
 	public boolean isHeader;
 	
@@ -20,7 +18,6 @@ public class Node {
 		isNull = false;
 	}
 	
-	
 	Node(String str){
 		if(str.equals("null")){
 			isNull = true;
@@ -32,9 +29,8 @@ public class Node {
 		}
 	}
 	
-	
-	
-	
-	
-	
+	 @Override
+	 public String toString() {
+		 return "(" + key + "," + data + ")";
+	 }
 }

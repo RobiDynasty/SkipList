@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.*;
 
 public class SkipList {
 	
@@ -95,6 +96,7 @@ public class SkipList {
 			}
 		}
 		if(pos.next[0].key == searchKey) {
+			System.out.println(pos.next[0].data);
 			return pos.next[0].data;
 		}
 		else {
@@ -126,18 +128,57 @@ public class SkipList {
 		return Math.min(newLevel, maxLevels);
 	}
 	
+	
+	public static void print() {
+		
+
+		Node pos = list[0].next[0];
+		String str = "(";
+		
+		while(!pos.isNull) {
+			if(pos.next[0].isNull) {
+				str += pos;
+			}
+			else {
+				str += pos + ",";
+			}
+			pos = pos.next[0];
+		}
+		str += ")";
+		System.out.println(str);
+		
+		return;
+		
+		
+	}
+	
 	public static void main(String[] args) {
+		
 		initializeList();
-		insert(list, 3, 4);
-		insert(list, 5, 10);
-		insert(list, 2, 9);
-		insert(list, 3, 11);
-		insert(list, 1, 120);
-		System.out.println(search(list, 3));
-		System.out.println(search(list, 5));
-		//delete(list, 5);
-		//System.out.println(search(list, 5));
-		//System.out.println(getFromStart(1));
+		Scanner in = new Scanner(System.in);
+		String cmd = in.nextLine().toLowerCase();
+		
+		while(!cmd.equals("quit")){
+			String[] func = cmd.split("\\s+");
+			if(func[0].equals("add")) {
+				insert(list, Integer.parseInt(func[1]), Integer.parseInt(func[2]));
+			}
+			
+			else if(func[0].equals("search")) {
+				search(list, Integer.parseInt(func[1]));
+			}
+			
+			else if(func[0].equals("delete")) {
+				delete(list, Integer.parseInt(func[1]));
+			}
+			
+			else if(func[0].equals("print")) {
+				print();
+			}
+			cmd = in.nextLine();
+		}
+		in.close();
+		return;
 		
 	}
 	
