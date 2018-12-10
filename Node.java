@@ -6,6 +6,8 @@ public class Node {
 	public int key;
 	public int data;
 	public Node[] next;
+	
+	
 	public boolean isNull;
 	public boolean isHeader;
 	

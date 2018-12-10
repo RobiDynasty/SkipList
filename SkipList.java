@@ -24,11 +24,14 @@ public class SkipList {
 		
 		
 		for(int i = currentLevels; i > 0; i--) {
+			pos = list[i-1];
 			while (!pos.next[0].isNull && pos.next[0].key < searchKey) {
 				pos = pos.next[0];
 			}
 			updates[i - 1] = pos;
 		}
+		
+		pos = pos.next[0];
 		
 		if(pos.key == searchKey) {
 			pos.data = newValue;
@@ -57,6 +60,50 @@ public class SkipList {
 		
 	}
 	
+	public static void delete(Node[] list, int searchKey) {
+		Node[] updates = new Node[maxLevels];
+		Node pos = list[currentLevels-1];
+		
+		for(int i = currentLevels; i > 0; i--) {
+			pos = list[i-1];
+			while (!pos.next[0].isNull && pos.next[0].key < searchKey) {
+				pos = pos.next[0];
+			}
+			updates[i - 1] = pos;
+		}
+		
+		pos = pos.next[0];
+		
+		if(pos.key == searchKey) {
+			for(int i = 0; i < currentLevels; i++) {
+				if(updates[i].next[0] != pos) {
+					break;
+				}
+				updates[i].next[0] = pos.next[0];
+			}
+			while(currentLevels > 1 && list[currentLevels-1].next[0].isNull) {
+				currentLevels = currentLevels - 1;
+			}
+		}
+	}
+	
+	public static int search(Node[] list, int searchKey) {
+		Node pos = list[currentLevels-1];
+		
+		for(int i = currentLevels; i > 0; i--) {
+			pos = list[i-1];
+			while (!pos.next[0].isNull && pos.next[0].key < searchKey) {
+				pos = pos.next[0];
+			}
+		}
+		if(pos.next[0].key == searchKey) {
+			return pos.next[0].data;
+		}
+		else {
+			return 0;
+		}
+	}
+	
 	public static int randomLevel() {
 		int newLevel = 1;
 		Random rand = new Random();
@@ -76,11 +123,17 @@ public class SkipList {
 		System.out.println(list[0].next[0].key);
 		System.out.println(list[0].next[0].data);
 		System.out.println("current level is " + currentLevels);
-		insert(list, 2, 5);
-		
+		insert(list, 5, 5);
+		//insert(list, 3, 5);
+		insert(list, 1, 10);
+		insert(list, 9, 5);
 		System.out.println("current level is " + currentLevels);
 		System.out.println(list[0].next[0].key);
-		
+		System.out.println(list[0].next[0].data);
+		System.out.println(search(list, 9));
+		delete(list, 1);
+		delete(list, 3);
+		System.out.println(list[0].next[0].key);
 	}
 	
 }
