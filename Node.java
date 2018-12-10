@@ -21,11 +21,6 @@ public class Node {
 	}
 	
 	
-	
-	Node(int levels){	// Constructor to make header Nodes
-		this.levels = levels;
-	}
-	
 	Node(String str){
 		if(str.equals("null")){
 			isNull = true;

@@ -40,8 +40,6 @@ public class SkipList {
 		else {
 			int newLevel = randomLevel(); 	// produces a random level randomLevel();
 			int listLevel = currentLevels;	// Number of levels currently on head of the list
-			System.out.println("new level " + newLevel);
-			System.out.println("updates[0] " + updates[0].next);
 			
 			if(newLevel > listLevel) {
 				for(int i = listLevel + 1; i <= newLevel; i++) {
@@ -100,8 +98,19 @@ public class SkipList {
 			return pos.next[0].data;
 		}
 		else {
+			System.out.println("Given key does not exist.");
 			return 0;
 		}
+	}
+	
+	public static int getFromStart(int num) {
+		
+		Node pos = list[0];
+		
+		for(int i = 0; i < num; i++) {
+			pos = pos.next[0];
+		}
+		return pos.key;
 	}
 	
 	public static int randomLevel() {
@@ -120,20 +129,16 @@ public class SkipList {
 	public static void main(String[] args) {
 		initializeList();
 		insert(list, 3, 4);
-		System.out.println(list[0].next[0].key);
-		System.out.println(list[0].next[0].data);
-		System.out.println("current level is " + currentLevels);
-		insert(list, 5, 5);
-		//insert(list, 3, 5);
-		insert(list, 1, 10);
-		insert(list, 9, 5);
-		System.out.println("current level is " + currentLevels);
-		System.out.println(list[0].next[0].key);
-		System.out.println(list[0].next[0].data);
-		System.out.println(search(list, 9));
-		delete(list, 1);
-		delete(list, 3);
-		System.out.println(list[0].next[0].key);
+		insert(list, 5, 10);
+		insert(list, 2, 9);
+		insert(list, 3, 11);
+		insert(list, 1, 120);
+		System.out.println(search(list, 3));
+		System.out.println(search(list, 5));
+		//delete(list, 5);
+		//System.out.println(search(list, 5));
+		//System.out.println(getFromStart(1));
+		
 	}
 	
 }
